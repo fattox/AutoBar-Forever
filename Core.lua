@@ -163,8 +163,11 @@ function AutoBar:InitializeZero()
 	AutoBar.frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	AutoBar.frame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
 
-	local ok = pcall(AutoBar.frame.RegisterEvent, AutoBar.frame, "LEARNED_SPELL_IN_TAB")
-    if not ok then code.log_warning("Event does not exist:", "LEARNED_SPELL_IN_TAB") end
+	local ok
+	if not ABGData.is_forever_wow then
+		ok = pcall(AutoBar.frame.RegisterEvent, AutoBar.frame, "LEARNED_SPELL_IN_TAB")
+		if not ok then code.log_warning("Event does not exist:", "LEARNED_SPELL_IN_TAB") end
+	end
     ok = pcall(AutoBar.frame.RegisterEvent, AutoBar.frame, "LEARNED_SPELL_IN_SKILL_LINE")
     if not ok then code.log_warning("Event does not exist:", "LEARNED_SPELL_IN_SKILL_LINE") end
 
@@ -173,7 +176,7 @@ function AutoBar:InitializeZero()
 	ok = pcall(AutoBar.frame.RegisterEvent, AutoBar.frame, "NEW_MOUNT_ADDED")
 	if not ok then code.log_warning("Event does not exist:", "NEW_MOUNT_ADDED") end
 
-	if(AutoBarDB2.settings.handle_spell_changed) then
+	if(ABGData.is_forever_wow or AutoBarDB2.settings.handle_spell_changed) then
 		AutoBar.frame:RegisterEvent("SPELLS_CHANGED")
 	end
 	AutoBar.frame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
@@ -406,7 +409,9 @@ function AB.events.ZONE_CHANGED_NEW_AREA()
 end
 
 function AB.events.PLAYER_ENTERING_WORLD()
-	code.log_warning("* PLAYER_ENTERING_WORLD")
+	if not ABGData.is_forever_wow then
+		code.log_warning("* PLAYER_ENTERING_WORLD")
+	end
 
 --UIParentLoadAddOn("Blizzard_DebugTools")
 --UIParentLoadAddOn("Blizzard_EventTrace")
@@ -587,7 +592,7 @@ end
 function AB.events.SPELLS_CHANGED(p_arg1)
 	AB.LogEventStart("SPELLS_CHANGED")
 
-	if(AutoBarDB2.settings.handle_spell_changed) then
+	if(ABGData.is_forever_wow or AutoBarDB2.settings.handle_spell_changed) then
 		AB.ABScheduleUpdate(tick.UpdateSpellsID)
 	end
 
@@ -1267,4 +1272,3 @@ function AB.UpdateButtons()
 	return tick.UpdateCompleteID;
 
 end
-

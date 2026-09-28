@@ -1,0 +1,7 @@
+## Interface: 160001
+## Title: AutoBar Forever Probe
+## Notes: Checks WoW Forever APIs needed by AutoBar. Type /abforever to print the report.
+## Author: AutoBar Forever contributors
+## Version: 0.1.1
+
+AutoBarForeverProbe.lua

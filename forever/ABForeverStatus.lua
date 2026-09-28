@@ -14,6 +14,6 @@ SlashCmdList.AUTOBARFOREVERSTATUS = function()
     print("AutoBar Forever: initialized " .. tostring(AutoBar and AutoBar.initialized)
         .. ", bars " .. tostring(bars))
     if AutoBar and AutoBar.warning_log then
-        print("AutoBar Forever: " .. #AutoBar.warning_log .. " warnings; see AutoBar > Debug > Warnings")
+        print("AutoBar Forever: " .. #AutoBar.warning_log .. " warnings; type /run AutoBar:DumpWarningLog() to show them in chat")
     end
 end

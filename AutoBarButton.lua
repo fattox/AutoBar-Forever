@@ -2009,6 +2009,14 @@ end
 -- Set cooldown based on the deployed totem
 function AutoBarButtonTotemBase:UpdateCooldown()
 	local itemType = self.frame:GetAttribute("type")
+	-- Fire Nova is a castable spell in Forever, so show its spell cooldown
+	-- instead of the active Fire totem's timer.
+	if (ABGData.is_forever_wow and self.totemSlot == totemFire
+		and itemType == "spell"
+		and self.frame:GetAttribute("spell") == ABGData.spell_name_list["Fire Nova"]) then
+		AutoBar.Class.Button.UpdateCooldown(self)
+		return
+	end
 	if (itemType and not self.parentBar.faded) then
 		local start, duration = ABGetTotemCooldown(self.totemSlot)
 

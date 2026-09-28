@@ -486,7 +486,8 @@ end
 local function create_buttons_from_template(p_template_db, p_button_list, p_bar_key)
 
 	for idx, button_def in ipairs(p_template_db) do
-		if(button_def.project_id == nil) or (button_def.project_id == WOW_PROJECT_ID) then
+		if(button_def.project_id == nil) or (button_def.project_id == WOW_PROJECT_ID)
+			or (ABGData.is_forever_wow and button_def.project_id == WOW_PROJECT_CLASSIC) then
 			local button_name = button_def.button_name
 			if (not p_button_list[button_name]) then
 				p_button_list[button_name] = {
@@ -703,7 +704,7 @@ function AutoBar:InitializeDefaults()
 --#region XpacButtons
 	-- A list of all buttons on the account bars that a player should have by expansion pack
 
-	if (LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_WRATH_OF_THE_LICH_KING) then
+	if (not ABGData.is_forever_wow and LE_EXPANSION_LEVEL_CURRENT >= LE_EXPANSION_WRATH_OF_THE_LICH_KING) then
 
 		if (not AutoBarDB2.account.buttonList["AutoBarButtonMillHerbs"]) then
 			AutoBarDB2.account.buttonList["AutoBarButtonMillHerbs"] = {
@@ -721,7 +722,7 @@ function AutoBar:InitializeDefaults()
 
 
 
-	if (ABGData.is_mainline_wow) then	--ToDo: These should be changed to use LE_EXPANSION_* for forward compatibility
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then	--ToDo: These should be changed to use LE_EXPANSION_* for forward compatibility
 
 		if (not AutoBarDB2.account.buttonList["AutoBarButtonArchaeology"]) then
 			AutoBarDB2.account.buttonList["AutoBarButtonArchaeology"] = {
@@ -915,7 +916,7 @@ function AutoBar:InitializeDefaults()
 	--classic-only: "AutoBarButtonTrack",
 	local deprecated_buttons
 
-	if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
+	if (ABGData.is_classic_content) then
 		deprecated_buttons =
 		{
 			"AutoBarButtonWarlockStones", "AutoBarButtonSting", "AutoBarButtonAura",
@@ -963,7 +964,7 @@ function AutoBar:InitializeDefaults()
 		AutoBar.class.buttonList["AutoBarButtonInterrupt"] = nil
 	end
 
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 
 		if(AutoBar.CLASS == "ROGUE" and AutoBar.class.buttonList["AutoBarButtonTrap"]) then
 			AutoBar.class.buttonList["AutoBarButtonTrap"] = nil
@@ -1329,5 +1330,4 @@ end
 function AutoBar:UpgradeVersion()
 
 end
-
 

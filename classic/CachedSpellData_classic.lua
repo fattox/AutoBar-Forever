@@ -164,7 +164,8 @@ code.cache_spell_data(14752, "Divine Spirit");
 
 --Rogue
 code.cache_spell_data(1842, "Disarm Trap");
-code.cache_spell_data(4086, "Evasion");
+-- 4086 is a passive effect; the castable Rogue ability is 5277.
+code.cache_spell_data(ABGData.is_forever_wow and 5277 or 4086, "Evasion");
 code.cache_spell_data(1766, "Kick");
 code.cache_spell_data(1784, "Stealth");
 code.cache_spell_data(1856, "Vanish");
@@ -200,7 +201,9 @@ code.cache_spell_data(8835, "Grace of Air Totem");
 code.cache_spell_data(8177, "Grounding Totem");
 code.cache_spell_data(10595, "Nature Resistance Totem");
 code.cache_spell_data(6495, "Sentry Totem");
-code.cache_spell_data(25908, "Tranquil Air Totem");
+if not ABGData.is_forever_wow then
+	code.cache_spell_data(25908, "Tranquil Air Totem");
+end
 code.cache_spell_data(8512, "Windfury Totem");
 code.cache_spell_data(15107, "Windwall Totem");
 
@@ -212,7 +215,12 @@ code.cache_spell_data(8075, "Strength of Earth Totem");
 code.cache_spell_data(8143, "Tremor Totem");
 
 	--Fire totems
-code.cache_spell_data(1535, "Fire Nova Totem");
+if ABGData.is_forever_wow then
+	-- Forever replaces Fire Nova Totem with a castable spell.
+	code.cache_spell_data(408341, "Fire Nova");
+else
+	code.cache_spell_data(1535, "Fire Nova Totem");
+end
 code.cache_spell_data(16387, "Flametongue Totem");
 code.cache_spell_data(8181, "Frost Resistance Totem");
 code.cache_spell_data(8190, "Magma Totem");
@@ -261,8 +269,13 @@ code.cache_spell_data(5500, "Sense Demons");
 code.cache_spell_data(704, "Curse of Recklessness");
 code.cache_spell_data(1714, "Curse of Tongues");
 code.cache_spell_data(702, "Curse of Weakness");
-code.cache_spell_data(17862, "Curse of Shadow");
-code.cache_spell_data(1490, "Curse of the Elements");
+if ABGData.is_forever_wow then
+	-- The old Curse of Shadow is gone; Elements uses new ranks.
+	code.cache_spell_data(440892, "Curse of the Elements");
+else
+	code.cache_spell_data(17862, "Curse of Shadow");
+	code.cache_spell_data(1490, "Curse of the Elements");
+end
 
 code.cache_spell_data(693, "Create Soulstone (Minor)");
 code.cache_spell_data(20752, "Create Soulstone (Lesser)");
@@ -274,7 +287,9 @@ code.cache_spell_data(437169, "Portal of Summoning");
 code.cache_spell_data(698, "Ritual of Summoning");
 
 
-code.cache_spell_data(18220, "Dark Pact");
+if not ABGData.is_forever_wow then
+	code.cache_spell_data(18220, "Dark Pact");
+end
 code.cache_spell_data(5697, "Unending Breath");
 code.cache_spell_data(126, "Eye of Kilrogg");
 code.cache_spell_data(427733, "Summon Felguard");

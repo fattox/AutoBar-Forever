@@ -425,14 +425,16 @@ function AB.events.PLAYER_ENTERING_WORLD()
 	if (not AutoBar.inWorld) then
 		AutoBar.inWorld = true;
 
-		AutoBarDB2.whatsnew_version = MUFFIN_WHATS_NEW_QUEUE.AddConditionalEntry({
-			addon_name = ADDON_NAME,
-			text = AB.WHATSNEW_TEXT,
-			version = AutoBarDB2.whatsnew_version,
-			force_show = false,
-		})
+		if not ABGData.is_forever_wow then
+			AutoBarDB2.whatsnew_version = MUFFIN_WHATS_NEW_QUEUE.AddConditionalEntry({
+				addon_name = ADDON_NAME,
+				text = AB.WHATSNEW_TEXT,
+				version = AutoBarDB2.whatsnew_version,
+				force_show = false,
+			})
 
-		MUFFIN_WHATS_NEW_QUEUE.Show()
+			MUFFIN_WHATS_NEW_QUEUE.Show()
+		end
 	end
 
 

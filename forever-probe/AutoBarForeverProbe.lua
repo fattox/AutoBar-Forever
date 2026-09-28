@@ -26,12 +26,16 @@ local function collect()
     add("loadstring_untainted", type(loadstring_untainted))
     add("SecureHandlerWrapScript", type(SecureHandlerWrapScript))
     add("C_RestrictedActions", type(C_RestrictedActions))
-    check("Addon restriction active", function()
-        if not C_RestrictedActions or not C_RestrictedActions.IsAddOnRestrictionActive then
-            return "API unavailable"
+    if C_RestrictedActions and C_RestrictedActions.IsAddOnRestrictionActive
+        and Enum and Enum.AddOnRestrictionType then
+        for name, restrictionType in pairs(Enum.AddOnRestrictionType) do
+            check("Restriction " .. name, function()
+                return C_RestrictedActions.IsAddOnRestrictionActive(restrictionType)
+            end)
         end
-        return C_RestrictedActions.IsAddOnRestrictionActive()
-    end)
+    else
+        add("Addon restrictions", "API unavailable")
+    end
     add("C_Container.GetContainerNumSlots", type(C_Container and C_Container.GetContainerNumSlots))
     add("C_Container.GetContainerItemID", type(C_Container and C_Container.GetContainerItemID))
     add("C_Item.GetItemCount", type(C_Item and C_Item.GetItemCount))
@@ -44,16 +48,17 @@ local function collect()
         return C_Item.GetItemCount(6948)
     end)
 
-    -- AutoBar uses SecureHandlerStateTemplate for its bars and Execute for popups.
-    -- Keep this frame hidden and avoid protected changes during combat.
+    -- Execute has no useful return value. Verify a side effect in the secure frame.
+    -- AutoBar uses this template for its bars and secure snippets for popups.
     if InCombatLockdown() then
         add("Secure snippet", "skipped in combat; retry /abforever out of combat")
     else
         check("Secure snippet", function()
             local secureFrame = CreateFrame("Frame", nil, UIParent, "SecureHandlerStateTemplate")
             secureFrame:Hide()
-            local result = secureFrame:Execute("return 42")
-            return result == 42 and "works" or ("unexpected result: " .. tostring(result))
+            secureFrame:Execute([[self:SetAttribute("ABForeverProbe", 42)]])
+            local result = secureFrame:GetAttribute("ABForeverProbe")
+            return result == 42 and "works" or ("did not execute; attribute is " .. tostring(result))
         end)
     end
 end

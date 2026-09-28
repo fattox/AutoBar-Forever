@@ -126,7 +126,9 @@ local api_version_temp = strsplittable(".", ver_string)
 AutoBarGlobalDataObject.API_VERSION = tonumber(api_version_temp[1])
 AutoBarGlobalDataObject.API_SUBVERSION = tonumber(api_version_temp[2])
 
-if(AutoBarGlobalDataObject.API_VERSION >= 10) then	-- Dragonflight+
+-- Forever reports a modern client version, but its ActionButtonTemplate still
+-- uses the Classic 36px icon geometry. A 45px frame leaves the icon in one corner.
+if(AutoBarGlobalDataObject.API_VERSION >= 10 and not is_forever_wow) then	-- Dragonflight+
 	AutoBarGlobalDataObject.default_button_width = 45
 	AutoBarGlobalDataObject.default_button_height = 45
 end

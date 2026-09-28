@@ -645,7 +645,7 @@ end
 local SPELL_FEED_PET = code.get_spell_name_by_name("Feed Pet")
 local SPELL_PICK_LOCK = code.get_spell_name_by_name("Pick Lock")
 local SPELL_MILL_HERB
-if(ABGData.is_mainline_wow) then
+if(ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 	SPELL_MILL_HERB = code.get_spell_name_by_name("Milling")
 end
 

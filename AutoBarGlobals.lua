@@ -279,11 +279,19 @@ end
 function code.GetIconForItemID(p_item_id)	--TODO: Calls into this seem to always tonumber, is that necessary?
 
 	local i_texture = select(10, code.GetItemInfo(p_item_id))
+	if i_texture then
+		return i_texture
+	end
 
----@diagnostic disable-next-line: deprecated
-	local ii_texture = select(5, GetItemInfoInstant(p_item_id))
+	-- GetItemInfoInstant is no longer a global on Forever. This also works
+	-- when the item is not yet in GetItemInfo's cache.
+	if C_Item and C_Item.GetItemIconByID then
+		return C_Item.GetItemIconByID(p_item_id)
+	end
 
-	return ii_texture or i_texture;
+	if GetItemInfoInstant then
+		return select(5, GetItemInfoInstant(p_item_id))
+	end
 end
 
 --TODO: Document what this is for

@@ -10,6 +10,12 @@ local ItemsCategory = AB.ItemsCategory
 --local MacroTextCategory = AB.MacroTextCategory
 local SpellsCategory = AB.SpellsCategory
 
+local function classicOnlySpell(name)
+	if not ABGData.is_forever_wow then
+		return code.get_spell_name_by_name(name)
+	end
+end
+
 
 
 function AB.InitializeCategories()
@@ -239,14 +245,14 @@ function AB.InitializeCategories()
 		"SHAMAN", code.get_spell_name_by_name("Grounding Totem");
 		"SHAMAN", code.get_spell_name_by_name("Nature Resistance Totem");
 		"SHAMAN", code.get_spell_name_by_name("Sentry Totem");
-		"SHAMAN", code.get_spell_name_by_name("Tranquil Air Totem");
+		"SHAMAN", classicOnlySpell("Tranquil Air Totem");
 		"SHAMAN", code.get_spell_name_by_name("Windfury Totem");
 		"SHAMAN", code.get_spell_name_by_name("Windwall Totem");
 	})
 
 	AutoBarCategoryList["Spell.Totem.Fire"] = SpellsCategory:new("Spell.Totem.Fire", spellIconList["Liquid Magma Totem"],
 	{
-		"SHAMAN", code.get_spell_name_by_name("Fire Nova Totem");
+		"SHAMAN", ABGData.is_forever_wow and code.get_spell_name_by_name("Fire Nova") or code.get_spell_name_by_name("Fire Nova Totem");
 		"SHAMAN", code.get_spell_name_by_name("Flametongue Totem");
 		"SHAMAN", code.get_spell_name_by_name("Frost Resistance Totem");
 		"SHAMAN", code.get_spell_name_by_name("Magma Totem");
@@ -301,7 +307,7 @@ function AB.InitializeCategories()
 		"SHAMAN", code.get_spell_name_by_name("Frost Shock"),
 		"WARLOCK", code.get_spell_name_by_name("Curse of Tongues"),
 		"WARLOCK", code.get_spell_name_by_name("Curse of Recklessness"),
-		"WARLOCK", code.get_spell_name_by_name("Curse of Shadow"),
+		"WARLOCK", classicOnlySpell("Curse of Shadow"),
 		"WARLOCK", code.get_spell_name_by_name("Curse of the Elements"),
 		"WARLOCK", code.get_spell_name_by_name("Curse of Weakness"),	--y
 	})
@@ -366,7 +372,7 @@ function AB.InitializeCategories()
 		"MAGE", code.get_spell_name_by_name("Ice Block"),
 		"PALADIN", code.get_spell_name_by_name("Lay on Hands"),
 		"ROGUE", code.get_spell_name_by_name("Vanish"),
-		"WARLOCK", code.get_spell_name_by_name("Dark Pact"),
+		"WARLOCK", classicOnlySpell("Dark Pact"),
 		"WARRIOR", code.get_spell_name_by_name("Berserker Rage"),
 		"WARRIOR", code.get_spell_name_by_name("Last Stand"),
 	})
@@ -411,4 +417,3 @@ function AB.InitializeCategories()
 	})
 
 end
-

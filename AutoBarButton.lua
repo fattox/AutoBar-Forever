@@ -1085,7 +1085,7 @@ AutoBar.Class["AutoBarButtonPoisonLethal"] = AutoBarButtonPoisonLethal
 function AutoBarButtonPoisonLethal:init(parentBar, buttonDB)
 	AutoBarButtonPoisonLethal.super.init(self, parentBar, buttonDB)
 
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Spell.Poison.Lethal")
 	else
 		self:AddCategory("Muffin.Poison.Lethal")
@@ -1098,7 +1098,7 @@ AutoBar.Class["AutoBarButtonPoisonNonlethal"] = AutoBarButtonPoisonNonlethal
 function AutoBarButtonPoisonNonlethal:init(parentBar, buttonDB)
 	AutoBarButtonPoisonNonlethal.super.init(self, parentBar, buttonDB)
 
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Spell.Poison.Nonlethal")
 	else
 		self:AddCategory("Muffin.Poison.Nonlethal")
@@ -1117,7 +1117,7 @@ function AutoBarButtonBandages:init(parentBar, buttonDB)
 	self:AddCategory("Consumable.Bandage.Battleground.Arathi Basin")
 	self:AddCategory("Consumable.Bandage.Battleground.Warsong Gulch")
 
-	if (AutoBarGlobalDataObject.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Muffin.Bandages.Basic")
 	end
 
@@ -1153,7 +1153,7 @@ function AutoBarButtonBuff:init(parentBar, buttonDB)
 
 	self:AddCategory("Muffin.Potion.Water Breathing")
 
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Muffin.Order Hall.Buff")
 	end
 
@@ -1183,7 +1183,7 @@ function AutoBarButtonBuffWeapon:init(parentBar, buttonDB)
 	self:AddCategory("Consumable.Weapon Buff")
 	self:AddCategory("Spell.Buff.Weapon")
 
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Spell.Poison.Lethal")
 		self:AddCategory("Spell.Poison.Nonlethal")
 	else
@@ -1246,12 +1246,12 @@ function AutoBarButtonConjure:init(parentBar, buttonDB)
 	if (AutoBar.CLASS == "MAGE") then
 		self:AddCategory("Spell.Mage.Conjure Food")
 		self:AddCategory("Spell.Mage.Create Manastone")
-		if (not ABGData.is_mainline_wow) then
+		if (ABGData.is_classic_content or not ABGData.is_mainline_wow) then
 			self:AddCategory("Spell.Mage.Conjure Water")
 		end
 	elseif (AutoBar.CLASS == "WARLOCK") then
 		self:AddCategory("Spell.Warlock.Create Healthstone")
-		if (not ABGData.is_mainline_wow) then
+		if (ABGData.is_classic_content or not ABGData.is_mainline_wow) then
 			self:AddCategory("Spell.Warlock.Create Soulstone")
 		end
 
@@ -1816,7 +1816,7 @@ function AutoBarButtonQuest:init(parentBar, buttonDB)
 	self:AddCategory("Muffin.Misc.Quest")
 	self:AddCategory("Muffin.Misc.StartsQuest")
 	self:AddCategory("Misc.Usable.BossItem")
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and not ABGData.is_forever_wow) then
 		self:AddCategory("Dynamic.Quest")
 	end
 end
@@ -2156,7 +2156,7 @@ AutoBar.Class["AutoBarButtonWater"] = AutoBarButtonWater
 function AutoBarButtonWater:init(parentBar, buttonDB)
 	AutoBarButtonWater.super.init(self, parentBar, buttonDB)
 
-	if (AutoBar.CLASS == "MAGE" and not buttonDB.disableConjure and not ABGData.is_mainline_wow) then
+	if (AutoBar.CLASS == "MAGE" and not buttonDB.disableConjure and (ABGData.is_classic_content or not ABGData.is_mainline_wow)) then
 			self:AddCategory("Spell.Mage.Conjure Water")
 	end
 
@@ -2518,7 +2518,11 @@ else
 		if(buttonDB.mount_show_class == true) then
 			self:AddCategory("Misc.Mount.Summoned")
 			local class = AutoBar.CLASS
-			if(class == "PALADIN" or class == "DEATHKNIGHT" or class == "WARLOCK") then
+			if (ABGData.is_forever_wow and class == "PALADIN") then
+				self:AddCategory("Muffin.Mounts.Paladin")
+			elseif (ABGData.is_forever_wow and class == "WARLOCK") then
+				self:AddCategory("Muffin.Mounts.Warlock")
+			elseif(class == "PALADIN" or class == "DEATHKNIGHT" or class == "WARLOCK") then
 				self:AddCategory("Muffin.Mounts")
 			end
 		end
@@ -2527,7 +2531,11 @@ else
 			self:AddCategory("Macro.Mount.SummonRandomFave")
 		end
 
-		self:AddCategory("Spell.Mount")
+		if (ABGData.is_forever_wow) then
+			self:AddCategory("Muffin.Mounts.Item")
+		else
+			self:AddCategory("Spell.Mount")
+		end
 
 	end
 

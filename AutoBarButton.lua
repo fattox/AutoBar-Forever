@@ -2215,7 +2215,7 @@ end
 -- WoW Classic
 --
 -------------------------------------------------------------------
-if (not ABGData.is_mainline_wow) then
+if (not ABGData.is_mainline_wow or ABGData.is_forever_wow) then
 
 	local AutoBarButtonMount = Class(AutoBarButton)
 	AutoBar.Class["AutoBarButtonMount"] = AutoBarButtonMount

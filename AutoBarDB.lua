@@ -486,7 +486,8 @@ end
 local function create_buttons_from_template(p_template_db, p_button_list, p_bar_key)
 
 	for idx, button_def in ipairs(p_template_db) do
-		if(button_def.project_id == nil) or (button_def.project_id == WOW_PROJECT_ID)
+		if(button_def.project_id == nil)
+			or (button_def.project_id == WOW_PROJECT_ID and not ABGData.is_forever_wow)
 			or (ABGData.is_forever_wow and button_def.project_id == WOW_PROJECT_CLASSIC) then
 			local button_name = button_def.button_name
 			if (not p_button_list[button_name]) then
@@ -1330,4 +1331,3 @@ end
 function AutoBar:UpgradeVersion()
 
 end
-

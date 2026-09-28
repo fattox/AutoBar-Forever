@@ -3,8 +3,10 @@
 -- The names are verbose to reduce likelihood of conflict with another addon
 
 
-local _
-local AB = select(2, ...)
+local addon_name, AB = ...
+-- Forever identifies as the mainline project, but uses Classic-era content.
+-- Read our own TOC marker rather than inferring the game from WOW_PROJECT_ID.
+local is_forever_wow = C_AddOns.GetAddOnMetadata(addon_name, "X-AutoBar-Forever") == "1"
 
 local code = {}	---@class ABCode
 AB.code = code
@@ -106,6 +108,8 @@ AutoBarGlobalDataObject = {
 	profile = {},
 
 	is_mainline_wow = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
+	is_forever_wow = is_forever_wow,
+	is_classic_content = is_forever_wow or (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC),
 	is_vanilla_wow = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC),
 	is_bcc_wow = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC),
 	is_wrath_wow = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC),

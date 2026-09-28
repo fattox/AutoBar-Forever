@@ -1531,7 +1531,7 @@ function AutoBarButtonFishing:init(parentBar, buttonDB)
 	self:AddCategory("Muffin.Skill.Fishing.Misc")
 	self:AddCategory("Muffin.Skill.Fishing.Pole")
 	self:AddCategory("Muffin.Skill.Fishing.Rare Fish")
-	if (ABGData.is_mainline_wow) then
+	if (ABGData.is_mainline_wow and AutoBarCategoryList["Muffin.Toys.Fishing"]) then
 		AutoBarCategoryList["Muffin.Toys.Fishing"].only_favourites = false
 
 		self:AddCategory("Muffin.Toys.Fishing")
@@ -1757,7 +1757,10 @@ if (ABGData.is_mainline_wow) then
 	end
 
 	 function AutoBarButtonHearth:Refresh(parentBar, buttonDB)
-		AutoBarCategoryList["Muffin.Toys.Hearth"].only_favourites = buttonDB.only_favourite_hearth
+		local toyCategory = AutoBarCategoryList["Muffin.Toys.Hearth"]
+		if toyCategory then
+			toyCategory.only_favourites = buttonDB.only_favourite_hearth
+		end
 	 	AutoBarButtonHearth.super.Refresh(self, parentBar, buttonDB)
 	 end
 

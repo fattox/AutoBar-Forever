@@ -1,7 +1,7 @@
 ## Interface: 160001
 ## Title: AutoBar Forever
 ## Author: MuffinManKen, Toadkiller (original code); Forever port by fattox
-## Version: 0.1.0-beta5
+## Version: 0.1.0-beta6
 ## X-AutoBar-Forever: 1
 ## Notes: Dynamic bars with buttons that automatically add potions, water, food and other items you specify into a button for use. Does not use action slots.
 ## Notes-ruRU: Динамические панели с кнопками, которые автоматически добавляют зелья, воду, пищу и другие предметы для котрых вы определяете кнопки для использования. Не использует слоты на панеле команд.

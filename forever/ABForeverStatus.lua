@@ -44,3 +44,11 @@ SlashCmdList.AUTOBARFOREVERWARNINGS = function(message)
         print("AutoBar Forever: type /abfwarnings " .. (page + 1) .. " for the next page")
     end
 end
+
+-- Run once, reload, and run again to check that SavedVariables were restored.
+SLASH_AUTOBARFOREVERSAVECHECK1 = "/abfsavecheck"
+SlashCmdList.AUTOBARFOREVERSAVECHECK = function()
+    AutoBarDB2.forever_savecheck = (AutoBarDB2.forever_savecheck or 0) + 1
+    print("AutoBar Forever: save check " .. AutoBarDB2.forever_savecheck
+        .. "; reload and run /abfsavecheck again (expect the number to increase)")
+end

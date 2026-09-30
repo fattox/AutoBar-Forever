@@ -3,8 +3,10 @@
 -- The names are verbose to reduce likelihood of conflict with another addon
 
 
-local _
-local AB = select(2, ...)
+local addon_name, AB = ...
+-- Forever identifies as the mainline project, but uses Classic-era content.
+-- Read our own TOC marker rather than inferring the game from WOW_PROJECT_ID.
+local is_forever_wow = C_AddOns.GetAddOnMetadata(addon_name, "X-AutoBar-Forever") == "1"
 
 local code = {}	---@class ABCode
 AB.code = code
@@ -106,6 +108,8 @@ AutoBarGlobalDataObject = {
 	profile = {},
 
 	is_mainline_wow = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE),
+	is_forever_wow = is_forever_wow,
+	is_classic_content = is_forever_wow or (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC),
 	is_vanilla_wow = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC),
 	is_bcc_wow = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC),
 	is_wrath_wow = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC),
@@ -122,7 +126,9 @@ local api_version_temp = strsplittable(".", ver_string)
 AutoBarGlobalDataObject.API_VERSION = tonumber(api_version_temp[1])
 AutoBarGlobalDataObject.API_SUBVERSION = tonumber(api_version_temp[2])
 
-if(AutoBarGlobalDataObject.API_VERSION >= 10) then	-- Dragonflight+
+-- Forever reports a modern client version, but its ActionButtonTemplate still
+-- uses the Classic 36px icon geometry. A 45px frame leaves the icon in one corner.
+if(AutoBarGlobalDataObject.API_VERSION >= 10 and not is_forever_wow) then	-- Dragonflight+
 	AutoBarGlobalDataObject.default_button_width = 45
 	AutoBarGlobalDataObject.default_button_height = 45
 end
@@ -275,11 +281,19 @@ end
 function code.GetIconForItemID(p_item_id)	--TODO: Calls into this seem to always tonumber, is that necessary?
 
 	local i_texture = select(10, code.GetItemInfo(p_item_id))
+	if i_texture then
+		return i_texture
+	end
 
----@diagnostic disable-next-line: deprecated
-	local ii_texture = select(5, GetItemInfoInstant(p_item_id))
+	-- GetItemInfoInstant is no longer a global on Forever. This also works
+	-- when the item is not yet in GetItemInfo's cache.
+	if C_Item and C_Item.GetItemIconByID then
+		return C_Item.GetItemIconByID(p_item_id)
+	end
 
-	return ii_texture or i_texture;
+	if GetItemInfoInstant then
+		return select(5, GetItemInfoInstant(p_item_id))
+	end
 end
 
 --TODO: Document what this is for

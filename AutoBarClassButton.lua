@@ -282,6 +282,12 @@ function AutoBar.Class.Button:CreateButtonFrame()
 ---	frame:SetScript("PostClick", self.PostClick)
 
 	frame.icon = _G[("%sIcon"):format(name)]
+	if (ABGData.is_forever_wow and frame.icon) then
+		-- Forever's ActionButtonTemplate leaves the icon at the upper left
+		-- of the button. Center it within the surrounding button art.
+		frame.icon:ClearAllPoints()
+		frame.icon:SetPoint("CENTER", frame, "CENTER")
+	end
 	frame.border = _G[("%sBorder"):format(name)]
 	frame.cooldown = _G[("%sCooldown"):format(name)]
 	frame.macroName = _G[("%sName"):format(name)]

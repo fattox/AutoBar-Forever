@@ -180,12 +180,21 @@ end
 local function FilterByClass(castList, p_items_per_line)
 	local spellName, index, filteredList2, filteredList3
 	local items_per_line = p_items_per_line or 2
+	-- A spell ID missing from this client leaves a hole in the source table.
+	-- Lua's length operator can stop before entries following that hole.
+	local last_index = 0
+	for key in pairs(castList) do
+		if type(key) == "number" and key > last_index then
+			last_index = key
+		end
+	end
 
 	--TODO: verify that each entry starts with either a proper class name or a "*"
 	-- Filter out CLASS spells from castList
 	index = 1
-	for i = 1, # castList, items_per_line do
-		if (AutoBar.CLASS == castList[i] or "*" == castList[i]) then
+	for i = 1, last_index, items_per_line do
+		if (AutoBar.CLASS == castList[i] or "*" == castList[i])
+			and castList[i + 1] and (items_per_line ~= 3 or castList[i + 2]) then
 			spellName = castList[i + 1]
 			if (not filteredList2) then
 				filteredList2 = {}

@@ -103,6 +103,10 @@ function AutoBar.Class.PopupButton:CreateButtonFrame()
 ---	frame:SetScript("PostClick", self.PostClick)
 
 	frame.icon = _G[("%sIcon"):format(popupButtonName)]
+	if (ABGData.is_forever_wow and frame.icon) then
+		frame.icon:ClearAllPoints()
+		frame.icon:SetPoint("CENTER", frame, "CENTER")
+	end
 	frame.cooldown = _G[("%sCooldown"):format(popupButtonName)]
 	frame.macroName = _G[("%sName"):format(popupButtonName)]
 	frame.hotKey = _G[("%sHotKey"):format(popupButtonName)]
@@ -158,4 +162,3 @@ end
 function AutoBar.Class.PopupButton:IsActive()
 	return self.frame:GetAttribute("type")
 end
-
